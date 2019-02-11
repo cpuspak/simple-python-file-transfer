@@ -25,7 +25,6 @@ def getFile(name,s):
 		print("Completed")
 	else:
 		print("doesnt Exists")
-	s.close()
 
 
 def Main():
@@ -36,10 +35,13 @@ def Main():
 
 	while(1):
 		send = input('Send y/n : ')
+		if(send == 'n'):
+			break
 		if(send == 'y'):
 			t = threading.Thread(target = getFile, args = ("getFile",s))
 			t.start()
 		print("In main")
+	s.close()
 
 if __name__ == '__main__':
 	Main()
