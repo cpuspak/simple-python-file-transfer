@@ -3,9 +3,10 @@ import threading
 import os
 
 def RetrFile(name, sock):
-	fileName = sock.recv(1024).decode('utf-8')
+	#fileName = sock.recv(1024).decode('utf-8')
+	fileName = input()
 	if os.path.isfile(fileName):
-		sock.send(("Exists " + str(os.path.getsize(fileName))).encode('utf-8'))
+		sock.send(("Sending " +str(os.path.getsize(fileName))).encode('utf-8'))
 		userResponse = sock.recv(1024).decode('utf-8')
 
 		if userResponse[:2] == 'OK':
@@ -18,16 +19,15 @@ def RetrFile(name, sock):
 
 	else:
 		sock.send('ERR')
-
 	sock.close()
 
 def Main():
-	host = '127.0.0.1'
+	host = '192.168.3.153'
 	port = 5015
 
 	s = socket.socket()
 	#s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-	s.bind((host,port))
+	s.bind(('',port))
 	s.listen(5)
 
 	print("server started...")

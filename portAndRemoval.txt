@@ -1,0 +1,2 @@
+netstat -aon | findstr :5015
+TaskKill /PID 4416 /F
