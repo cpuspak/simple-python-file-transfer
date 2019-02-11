@@ -4,18 +4,20 @@ import os
 
 def RetrFile(name, sock):
 	#fileName = sock.recv(1024).decode('utf-8')
-	fileName = input()
-	if os.path.isfile(fileName):
-		sock.send(("Sending " +str(os.path.getsize(fileName))).encode('utf-8'))
-		userResponse = sock.recv(1024).decode('utf-8')
+	ack = sock.recv(1024).decode('utf-8')
+	if ack[:4] == 'Send':
+		fileName = input("Enter fileName to save at reciever : ")
+		if os.path.isfile(fileName):
+			sock.send(("Sending "+str(os.path.getsize(fileName))+"bytes"+" "+fileName).encode('utf-8'))
+			userResponse = sock.recv(1024).decode('utf-8')
 
-		if userResponse[:2] == 'OK':
-			with open(fileName, 'rb') as f:
-				bytesToSend = f.read(1024)
-				sock.send(bytesToSend)
-				while(bytesToSend != ''):
+			if userResponse[:2] == 'OK':
+				with open(fileName, 'rb') as f:
 					bytesToSend = f.read(1024)
 					sock.send(bytesToSend)
+					while(bytesToSend != ''):
+						bytesToSend = f.read(1024)
+						sock.send(bytesToSend)
 
 	else:
 		sock.send('ERR')

@@ -4,26 +4,25 @@ import threading
 
 def getFile(name,s):
 	#print(data)
+	s.send("Send".encode('utf-8'))
 	data = s.recv(1024).decode('utf-8')
+	print(data)
 	if data[:3] != 'ERR':
-		fileSize = data[7:]
-		#message = input("y/n : ")
-		message = 'y'
-		if(message == 'y'):
-			#fileName = input("FileName?:")
-			fileName = 'fileName.py'
-			s.send(('OK').encode('utf-8'))
-			f = open(fileName, 'wb')
+		fileSize,fileName = data.strip().split()[1:]
+		fileName = 'new_'+fileName
+		fileSize = int(fileSize.strip('bytes'))
+		s.send(('OK').encode('utf-8'))
+		f = open(fileName, 'wb')
+		data = s.recv(1024)
+		totalRecv = len(data)
+		f.write(data)
+		print(totalRecv)
+		while(totalRecv < int(fileSize)):
 			data = s.recv(1024)
-			totalRecv = len(data)
+			totalRecv += len(data)
 			f.write(data)
-			print(totalRecv)
-			while(totalRecv < int(fileSize)):
-				data = s.recv(1024)
-				totalRecv += len(data)
-				f.write(data)
-				print(str((totalRecv/float(fileSize))*100)+"% done")
-			print("Completed")
+			print(str((totalRecv/float(fileSize))*100)+"% done")
+		print("Completed")
 	else:
 		print("doesnt Exists")
 	s.close()
