@@ -3,8 +3,9 @@ import threading
 import os
 
 def RetrFile(name, sock):
-	#fileName = sock.recv(1024).decode('utf-8')
+
 	ack = sock.recv(1024).decode('utf-8')
+	print(ack)
 	if ack[:4] == 'Send':
 		fileName = input("Enter fileName to save at reciever : ")
 		if os.path.isfile(fileName):
@@ -18,17 +19,17 @@ def RetrFile(name, sock):
 					while(bytesToSend != ''):
 						bytesToSend = f.read(1024)
 						sock.send(bytesToSend)
-
+		else:
+			sock.send('ERR'.encode('utf-8'))
+			print(fileName)
 	else:
-		sock.send('ERR')
-	sock.close()
+		sock.close()
 
 def Main():
 	host = '192.168.3.153'
 	port = 5015
 
 	s = socket.socket()
-	#s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 	s.bind(('',port))
 	s.listen(5)
 
@@ -45,8 +46,3 @@ def Main():
 
 if __name__ == '__main__':
 	Main()
-
-
-
-
-
