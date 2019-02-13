@@ -26,11 +26,11 @@ def RetrFile(name, sock):
 		sock.close()
 
 def Main():
-	host = '192.168.3.153'
-	port = 5015
+	host = socket.gethostbyname('0.0.0.0')
+	port = 63
 
-	s = socket.socket()
-	s.bind(('',port))
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+	s.bind((host,port))
 	s.listen(5)
 
 	print("server started...")

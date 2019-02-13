@@ -30,8 +30,8 @@ class getFile(threading.Thread):
 			print("doesnt Exists")
 def Main():
 	print("clients")
-	host = '192.168.43.169'
-	port = 5015
+	host = '192.168.137.1' #'ServerIP'
+	port = 63
 
 	while(1):
 		send = input('Send y/n : ')
