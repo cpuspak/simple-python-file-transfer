@@ -19,7 +19,6 @@ class getFile(threading.Thread):
 			data = self.sock.recv(1024)
 			totalRecv = len(data)
 			f.write(data)
-			print(totalRecv)
 			while(totalRecv < int(fileSize)):
 				data = self.sock.recv(1024)
 				totalRecv += len(data)
@@ -30,7 +29,7 @@ class getFile(threading.Thread):
 			print("doesnt Exists")
 def Main():
 	print("clients")
-	host = '192.168.137.1' #'ServerIP'
+	host = '127.0.0.1'#'192.168.137.1' #'ServerIP'
 	port = 63
 
 	while(1):

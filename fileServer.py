@@ -2,12 +2,12 @@ import socket
 import threading
 import os
 
-def RetrFile(name, sock):
+def RetrFile(name, sock, addr):
 
 	ack = sock.recv(1024).decode('utf-8')
 	print(ack)
 	if ack[:4] == 'Send':
-		fileName = input("Enter fileName to save at reciever : ")
+		fileName = input("Enter fileName to save at reciever("+str(addr[0])+":"+str(addr[1])+") : ")
 		if os.path.isfile(fileName):
 			sock.send(("Sending "+str(os.path.getsize(fileName))+"bytes"+" "+fileName).encode('utf-8'))
 			userResponse = sock.recv(1024).decode('utf-8')
@@ -39,7 +39,7 @@ def Main():
 		c,addr = s.accept()
 		print("Connected to ip : "+ str(addr))
 
-		t = threading.Thread(target = RetrFile, args = ('retrThread', c))
+		t = threading.Thread(target = RetrFile, args = ('retrThread', c,addr))
 		t.start()
 
 	s.close()
